@@ -8,11 +8,11 @@ This is a **router-style plugin**: each slot declares a model list (`TONGFLOW_SL
 
 Implements these ABI slots (runs locally as a Python process, no GPU):
 
-- **Generate image** (`image-gen`) — `z-image-turbo` (default), `doubao-seedream-4-5`, `gemini-3-pro-image-preview`, `gpt-image-1-official`.
-- **Edit image** (`image-edit`) — `gemini-3-pro-image-preview` (default), `doubao-seedream-4-5`, `gpt-image-1-official`.
-- **Generate / rewrite text** (`gen-text`) — `gpt-5` (default), `claude-sonnet-4-6`, `gemini-2.5-pro`, `deepseek-v4-pro`.
-- **Text → video** (`text-gen-video`) — `kling-v3` (default), `veo3.1-fast`, `sora-2`, `doubao-seedance-2.0`.
-- **Image → video** (`image-gen-video`) — same model list; the input image is uploaded to APIMart first.
+- **Generate image** (`image-gen`) — `z-image-turbo` (default), Seedream 4.5 / 4.0 / 5.0-Lite, Nano Banana Pro / 2 / classic (`gemini-3-pro` / `3.1-flash` / `2.5-flash` image previews), `gpt-image-1-official`, `gpt-image-2`, `imagen-4.0-apimart`, `qwen-image-2.0`, `wan2.7-image`, `grok-imagine-1.5-apimart`.
+- **Edit image** (`image-edit`) — the image-capable subset of the above (Imagen 4.0 and Grok Imagine are text-to-image only).
+- **Generate / rewrite text** (`gen-text`) — `gpt-5` (default), `gpt-5.1`, `gpt-5-mini`, `claude-sonnet-4-6`, `claude-opus-4-8`, `gemini-2.5-pro`, `gemini-3.5-flash`, `gemini-2.5-flash`, `deepseek-v4-pro`, `deepseek-r1-250528`.
+- **Text → video** (`text-gen-video`) — `kling-v3` (default), `kling-3.0-turbo`, `kling-v2-6`, `veo3.1-fast` / `-quality` / `-lite`, `sora-2`, `sora-2-pro`, `doubao-seedance-2.0` / `-fast`, `doubao-seedance-1-5-pro`.
+- **Image → video** (`image-gen-video`) — same list minus `veo3.1-lite` (text-only); the input image is uploaded to APIMart first.
 - **Transcribe audio** (`transcribe`) — `whisper-1`.
 - **Text → speech** (`text-gen-speech-preset`) — `gpt-4o-mini-tts` (voices: alloy / echo / fable / onyx / nova / shimmer via the node's speaker field).
 

@@ -45,31 +45,66 @@ TONGFLOW_SLOT_MODELS = {
     "image-gen": [
         "z-image-turbo",
         "doubao-seedream-4-5",
+        "doubao-seedream-4-0",
+        "doubao-seedream-5-0-lite",
         "gemini-3-pro-image-preview",
+        "gemini-3.1-flash-image-preview",
+        "gemini-2.5-flash-image-preview",
         "gpt-image-1-official",
+        "gpt-image-2",
+        "imagen-4.0-apimart",
+        "qwen-image-2.0",
+        "wan2.7-image",
+        "grok-imagine-1.5-apimart",
     ],
     "image-edit": [
         "gemini-3-pro-image-preview",
+        "gemini-3.1-flash-image-preview",
+        "gemini-2.5-flash-image-preview",
         "doubao-seedream-4-5",
+        "doubao-seedream-4-0",
+        "doubao-seedream-5-0-lite",
         "gpt-image-1-official",
+        "gpt-image-2",
+        "qwen-image-2.0",
+        "wan2.7-image",
     ],
     "gen-text": [
         "gpt-5",
+        "gpt-5.1",
+        "gpt-5-mini",
         "claude-sonnet-4-6",
+        "claude-opus-4-8",
         "gemini-2.5-pro",
+        "gemini-3.5-flash",
+        "gemini-2.5-flash",
         "deepseek-v4-pro",
+        "deepseek-r1-250528",
     ],
     "text-gen-video": [
         "kling-v3",
+        "kling-3.0-turbo",
+        "kling-v2-6",
         "veo3.1-fast",
+        "veo3.1-quality",
+        "veo3.1-lite",
         "sora-2",
+        "sora-2-pro",
         "doubao-seedance-2.0",
+        "doubao-seedance-2.0-fast",
+        "doubao-seedance-1-5-pro",
     ],
     "image-gen-video": [
         "kling-v3",
+        "kling-3.0-turbo",
+        "kling-v2-6",
         "veo3.1-fast",
+        "veo3.1-quality",
         "sora-2",
+        "sora-2-pro",
         "doubao-seedance-2.0",
+        "doubao-seedance-2.0-fast",
+        "doubao-seedance-1-5-pro",
     ],
     "transcribe": ["whisper-1"],
     "text-gen-speech-preset": ["gpt-4o-mini-tts"],
@@ -342,6 +377,9 @@ class ImageSpec:
         return body
 
 
+# Every entry verified against its APIMart doc page (docs.apimart.ai
+# /en/api-reference/images/<model>/generation.md): allowed ratio buckets,
+# resolution tier, and whether image_urls (edit) is accepted.
 IMAGE_SPECS: Dict[str, ImageSpec] = {
     "z-image-turbo": ImageSpec(
         ratios=["1:1", "4:3", "3:4", "16:9", "9:16", "3:2", "2:3"],
@@ -351,18 +389,61 @@ IMAGE_SPECS: Dict[str, ImageSpec] = {
         ratios=["1:1", "4:3", "3:4", "16:9", "9:16", "3:2", "2:3", "21:9"],
         resolution="2K",
     ),
+    "doubao-seedream-4-0": ImageSpec(
+        ratios=["1:1", "4:3", "3:4", "16:9", "9:16", "3:2", "2:3", "21:9"],
+        resolution="2K",
+    ),
+    "doubao-seedream-5-0-lite": ImageSpec(
+        ratios=["1:1", "4:3", "3:4", "16:9", "9:16", "3:2", "2:3", "21:9"],
+        resolution="2K",
+    ),
     "gemini-3-pro-image-preview": ImageSpec(
         ratios=["1:1", "2:3", "3:2", "3:4", "4:3", "9:16", "16:9", "21:9"],
         resolution="1K",
     ),
+    "gemini-3.1-flash-image-preview": ImageSpec(
+        ratios=["1:1", "3:2", "2:3", "4:3", "3:4", "16:9", "9:16", "5:4", "4:5", "21:9"],
+        resolution="1K",
+    ),
+    "gemini-2.5-flash-image-preview": ImageSpec(
+        ratios=["1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "9:16", "16:9", "21:9"],
+        resolution="1K",
+    ),
     "gpt-image-1-official": ImageSpec(ratios=["1:1", "3:2", "2:3"]),
+    "gpt-image-2": ImageSpec(
+        ratios=["1:1", "3:2", "2:3", "4:3", "3:4", "5:4", "4:5", "16:9", "9:16", "21:9"],
+    ),
+    # Text-to-image only: sending image fields is a documented error.
+    "imagen-4.0-apimart": ImageSpec(
+        ratios=["1:1", "4:3", "3:4", "16:9", "9:16"],
+        default_ratio="16:9",
+    ),
+    "qwen-image-2.0": ImageSpec(
+        ratios=["1:1", "4:3", "3:4", "16:9", "9:16", "3:2", "2:3"],
+        resolution="1K",
+    ),
+    "wan2.7-image": ImageSpec(
+        ratios=["1:1", "16:9", "9:16", "4:3", "3:4"],
+    ),
+    # Text-to-image only (the edit variant is a separate /images/edit endpoint).
+    "grok-imagine-1.5-apimart": ImageSpec(
+        ratios=["1:1", "16:9", "9:16", "3:2", "2:3"],
+    ),
 }
 
-# image-edit reuses IMAGE_SPECS; only these models accept image_urls.
+# image-edit reuses IMAGE_SPECS; only these models accept image_urls
+# (imagen-4.0 and grok-imagine are text-to-image only).
 IMAGE_EDIT_MODELS = [
     "gemini-3-pro-image-preview",
+    "gemini-3.1-flash-image-preview",
+    "gemini-2.5-flash-image-preview",
     "doubao-seedream-4-5",
+    "doubao-seedream-4-0",
+    "doubao-seedream-5-0-lite",
     "gpt-image-1-official",
+    "gpt-image-2",
+    "qwen-image-2.0",
+    "wan2.7-image",
 ]
 
 VideoBuilder = Callable[
@@ -380,6 +461,36 @@ def _video_kling(
     }
     if duration:
         body["duration"] = max(3, min(15, int(duration)))
+    if urls:
+        body["image_urls"] = urls[:2]
+    return body
+
+
+def _video_kling_turbo(
+    text: str, w: Optional[int], h: Optional[int], duration: Optional[float], urls: List[str]
+) -> Dict[str, Any]:
+    # Kling 3.0 Turbo takes a single first_frame_image string, not image_urls.
+    body: Dict[str, Any] = {
+        "prompt": text,
+        "aspect_ratio": _snap_ratio(w, h, ["16:9", "9:16", "1:1"], "16:9"),
+    }
+    if duration:
+        body["duration"] = max(3, min(15, int(duration)))
+    if urls:
+        body["first_frame_image"] = urls[0]
+    return body
+
+
+def _video_kling_v26(
+    text: str, w: Optional[int], h: Optional[int], duration: Optional[float], urls: List[str]
+) -> Dict[str, Any]:
+    # Kling 2.6 only supports 5s or 10s clips.
+    body: Dict[str, Any] = {
+        "prompt": text,
+        "aspect_ratio": _snap_ratio(w, h, ["16:9", "9:16", "1:1"], "16:9"),
+    }
+    if duration:
+        body["duration"] = 10 if duration >= 8 else 5
     if urls:
         body["image_urls"] = urls[:2]
     return body
@@ -428,14 +539,55 @@ def _video_seedance(
     return body
 
 
+def _video_seedance_15(
+    text: str, w: Optional[int], h: Optional[int], duration: Optional[float], urls: List[str]
+) -> Dict[str, Any]:
+    # Seedance 1.5 Pro uses aspect_ratio (not size) and 4-12s durations.
+    body: Dict[str, Any] = {
+        "prompt": text,
+        "aspect_ratio": _snap_ratio(
+            w, h, ["16:9", "9:16", "1:1", "4:3", "3:4", "21:9"], "16:9"
+        ),
+        "resolution": "720p",
+    }
+    if duration:
+        body["duration"] = max(4, min(12, int(duration)))
+    if urls:
+        body["image_urls"] = urls[:2]
+    return body
+
+
+# One builder per request-body family; several model ids share a family.
+# Every entry verified against its APIMart doc page.
 VIDEO_BUILDERS: Dict[str, VideoBuilder] = {
     "kling-v3": _video_kling,
+    "kling-3.0-turbo": _video_kling_turbo,
+    "kling-v2-6": _video_kling_v26,
     "veo3.1-fast": _video_veo3,
+    "veo3.1-quality": _video_veo3,
+    "veo3.1-lite": _video_veo3,
     "sora-2": _video_sora2,
+    "sora-2-pro": _video_sora2,
     "doubao-seedance-2.0": _video_seedance,
+    "doubao-seedance-2.0-fast": _video_seedance,
+    "doubao-seedance-1-5-pro": _video_seedance_15,
 }
 
-CHAT_MODELS = ["gpt-5", "claude-sonnet-4-6", "gemini-2.5-pro", "deepseek-v4-pro"]
+# veo3.1-lite is text-to-video only, per the VEO3 doc page.
+VIDEO_IMAGE_MODELS = [m for m in VIDEO_BUILDERS if m != "veo3.1-lite"]
+
+CHAT_MODELS = [
+    "gpt-5",
+    "gpt-5.1",
+    "gpt-5-mini",
+    "claude-sonnet-4-6",
+    "claude-opus-4-8",
+    "gemini-2.5-pro",
+    "gemini-3.5-flash",
+    "gemini-2.5-flash",
+    "deepseek-v4-pro",
+    "deepseek-r1-250528",
+]
 TRANSCRIBE_MODELS = ["whisper-1"]
 TTS_MODELS = ["gpt-4o-mini-tts"]
 TTS_VOICES = {"alloy", "echo", "fable", "onyx", "nova", "shimmer"}
@@ -607,7 +759,7 @@ def _check_model_tables() -> None:
         "image-edit": IMAGE_EDIT_MODELS,
         "gen-text": CHAT_MODELS,
         "text-gen-video": list(VIDEO_BUILDERS),
-        "image-gen-video": list(VIDEO_BUILDERS),
+        "image-gen-video": VIDEO_IMAGE_MODELS,
         "transcribe": TRANSCRIBE_MODELS,
         "text-gen-speech-preset": TTS_MODELS,
     }
