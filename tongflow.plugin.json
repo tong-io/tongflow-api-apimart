@@ -1,0 +1,20 @@
+{
+    "env": [
+        {
+            "key": "APIMART_API_KEY",
+            "required": true,
+            "description": "APIMart API key",
+            "url": "https://apimart.ai"
+        },
+        {
+            "key": "APIMART_BASE_URL",
+            "default": "https://api.apimart.ai",
+            "description": "Override the APIMart endpoint"
+        },
+        {
+            "key": "APIMART_POLL_TIMEOUT_S",
+            "default": "600",
+            "description": "Max seconds to wait for an async task"
+        }
+    ]
+}
