@@ -1,4 +1,9 @@
 {
+    "plugin": {
+        "name": "APIMart",
+        "description": "OpenAI-compatible aggregation gateway — one key routes to many upstream image/text/video models (GPT, Claude, Gemini, Seedream, Sora, …).",
+        "icon": "/plugins/tongflow-api-apimart.svg"
+    },
     "env": [
         {
             "key": "APIMART_API_KEY",
